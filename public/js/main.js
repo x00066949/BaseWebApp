@@ -21,12 +21,25 @@ function initializeStreamListener() {
     if (messages) {
       Object.keys(messages).forEach(function (key) {
         const message = messages[key];
-        $('#stream').append(`<div > ${message.author} 
-		<img src="${message.authorPic}" alt="profile pic" height="42" width="42">
-		${message.body}</div>`);
+        $('#stream').append(`<div class="row" > 
+			<div class="col-md-4">
+				${message.author} 
+				<img src="${message.authorPic}" alt="profile pic" height="42" width="42">
+			</div>
+			<div class="col-md-8">
+				${message.body}
+				<br>
+				
+				<a href="#" onclick="messages[likes++]">
+					<span class="glyphicon glyphicon-thumbs-up">${message.likes}</span>
+				</a>
+			</div>
+		</div>
+		<hr>`);
       });
     }
   });
+  
 }
 
 // This function gets called with the new message information.
@@ -40,7 +53,8 @@ function addMessage(body, title) {
     author: author,
     authorPic: authorPic,
     title: title,
-    body: body
+    body: body,
+	likes: 0
   };
 
   var newPostKey = firebase.database().ref().child('stream').push().key;
@@ -80,6 +94,8 @@ function toggleSignIn() {
 // If a user isn't authenticated, we should not show the stream and prompt them to log in.
 // If a use IS authenticated, we should load/show the stream and give them the option to log out.
 window.onload = function() {
+	$('#new-post-body').val('');
+	$('#new-post-title').val('');
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       $('#stream').show();
@@ -92,3 +108,6 @@ window.onload = function() {
     $('#login-button').attr("disabled", false);
   });
 };
+
+//clear texts on load
+
