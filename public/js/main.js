@@ -9,7 +9,7 @@ function myFunction() {
   $("#doge-image").append(`<img class="img-circle" src="/images/wowdoge.jpeg" />`);
 }
 
-// This function sets up a listener- '.on()' gets called automatically whenever something saved in '/stream/' changes.
+//  function sets up a listener- '.on()' gets called automatically whenever something saved in '/stream/' changes.
 // It's main purpose is to iterate over the stream in the database and add each message to the page.
 function initializeStreamListener() {
   const databaseStreamReference = firebase.database().ref('/stream/');
@@ -30,7 +30,11 @@ function initializeStreamListener() {
 				${message.body}
 				<br>
 				
-				<a href="#" onclick="messages[likes++]">
+				<a onclick="(function(){
+					firebase.database().ref('stream/${key}').update({
+					likes : (${message.likes}+1)
+					});
+				})();return false;">
 					<span class="glyphicon glyphicon-thumbs-up">${message.likes}</span>
 				</a>
 			</div>
@@ -40,6 +44,13 @@ function initializeStreamListener() {
     }
   });
   
+}
+
+function increaseLikes(objectRef,currentLikes){
+	firebase.database().ref('stream/-' + objectRef).set({
+		likes : 4
+	});
+	
 }
 
 // This function gets called with the new message information.
@@ -108,6 +119,4 @@ window.onload = function() {
     $('#login-button').attr("disabled", false);
   });
 };
-
-//clear texts on load
 
