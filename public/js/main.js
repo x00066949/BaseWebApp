@@ -30,7 +30,7 @@ function initializeStreamListener() {
 				${message.body}
 				<br>
 				
-				<a onclick="(function(){
+				<a href="#" onclick="(function(){
 					firebase.database().ref('stream/${key}').update({
 					likes : (${message.likes}+1)
 					});
